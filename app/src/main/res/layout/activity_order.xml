@@ -5,7 +5,7 @@
     <data>
         <variable
             name="viewModel"
-            type="com.example.cosmetictogether.presentation.form.viewmodel.FormViewModel" />
+            type="com.example.cosmetictogether.presentation.order.viewmodel.OrderViewModel" />
     </data>
 
     <!-- 폼 바텀 네비게이션 바 -->
@@ -27,12 +27,22 @@
                 android:background="#CEDDFE"
                 app:contentInsetStart="0dp">
 
+                <ImageButton
+                    android:id="@+id/backBtn"
+                    android:layout_width="45sp"
+                    android:layout_height="45sp"
+                    android:adjustViewBounds="true"
+                    android:scaleType="fitCenter"
+                    android:backgroundTint="#00FF0000"
+                    android:layout_marginStart="10sp"
+                    android:src="@drawable/baseline_arrow_back_24" />
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
                     android:fontFamily="@font/nanum_square_eb"
-                    android:text="화함"
+                    android:text="주문 목록"
                     android:textColor="@color/black"
                     android:textSize="20sp"
                     android:textStyle="bold" />
@@ -40,8 +50,10 @@
         </com.google.android.material.appbar.AppBarLayout>
 
         <!-- RecyclerView는 ScrollView 밖으로 빼내어 독립적인 스크롤을 지원하도록 함 -->
+
+        <!-- 네비게이션을 맨 아래에 배치 -->
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/formRecyclerView"
+            android:id="@+id/orderRecyclerView"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:clipToPadding="false"
@@ -52,31 +64,10 @@
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/appBarLayout"
-            app:spanCount="2"
+            app:layout_constraintVertical_bias="0.9"
             tools:ignore="NotSibling"
-            tools:listitem="@layout/item_form" />
+            tools:listitem="@layout/item_order" />
 
-        <!-- 폼 작성 버튼을 하단에 고정 -->
-        <FrameLayout
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            android:layout_gravity="end|bottom"
-            android:padding="3dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginBottom="5dp"
-            app:layout_constraintBottom_toTopOf="@id/footerLayout"
-            app:layout_constraintEnd_toEndOf="parent">
-
-            <Button
-                android:id="@+id/createFormBtn"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@drawable/stroke_sky_full_angle"
-                android:text="폼 작성"
-                android:textColor="@android:color/white" />
-        </FrameLayout>
-
-        <!-- 네비게이션을 맨 아래에 배치 -->
         <LinearLayout
             android:id="@+id/footerLayout"
             android:layout_width="match_parent"

@@ -4,16 +4,17 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import com.example.cosmetictogether.R
 import com.example.cosmetictogether.databinding.ActivityFormBinding
+import com.example.cosmetictogether.presentation.form.adapter.FormAdapter
 import com.example.cosmetictogether.presentation.form.viewmodel.FormViewModel
 import com.example.cosmetictogether.presentation.mypage.view.MyPageActivity
 
-class FormActivity: AppCompatActivity() {
-
+class FormActivity : AppCompatActivity() {
+    private lateinit var formAdapter: FormAdapter
     private lateinit var binding: ActivityFormBinding
     private val viewModel: FormViewModel by viewModels()
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -24,7 +25,29 @@ class FormActivity: AppCompatActivity() {
         binding.viewModel = viewModel
         binding.lifecycleOwner = this
 
+        // ListAdapter 사용하여 어댑터 초기화
+        formAdapter = FormAdapter()
+        binding.formRecyclerView.adapter = formAdapter
+
         viewModel.loadFormSummaryData()
+
+        // 폼 작성 버튼 클릭
+        binding.createFormBtn.setOnClickListener {
+            startActivity(Intent(this, FormCreateActivity::class.java))
+        }
+
+        // 데이터 업데이트 시 RecyclerView에 반영
+        viewModel.formData.observe(this, Observer { formList ->
+            formAdapter.submitList(formList) // ListAdapter에서는 submitList 사용 가능
+        })
+
+        //폼 세부 조회
+        formAdapter.setOnItemClickListener { formId ->
+            // 선택된 formId를 Intent로 전달하여 FormDetailActivity로 이동
+            val intent = Intent(this, FormDetailActivity::class.java)
+            intent.putExtra("formId", formId)
+            startActivity(intent)
+        }
 
         // BottomNavigationView의 항목 클릭 이벤트 설정
         binding.bottomNavigationView.setOnItemSelectedListener { item ->
@@ -55,6 +78,5 @@ class FormActivity: AppCompatActivity() {
                 else -> false
             }
         }
-
     }
 }
